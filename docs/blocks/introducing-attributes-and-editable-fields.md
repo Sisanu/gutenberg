@@ -88,7 +88,7 @@ registerBlockType( 'gutenberg-boilerplate-esnext/hello-world-step-03', {
 
 		return (
 			<RichText
-				tagName="p"
+				tagName="p",
 				className={ className }
 				onChange={ onChangeContent }
 				value={ content }
