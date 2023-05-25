@@ -155,6 +155,7 @@ export default function PostTermsEdit( {
 									key={ postTerm.id }
 									href={ postTerm.link }
 									target={ linkTarget ?? '_self' }
+									rel="tag"
 									onClick={ ( event ) =>
 										event.preventDefault()
 									}
