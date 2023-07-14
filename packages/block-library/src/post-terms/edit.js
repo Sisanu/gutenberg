@@ -120,12 +120,11 @@ export default function PostTermsEdit( {
 						tagName="span"
 					/>
 				) }
-
 				{ ( ! hasPost || ! term ) && (
 					<span>{ blockInformation.title }</span>
 				) }
-
-				{ hasPost && ! isLoading &&
+				{ hasPost &&
+					! isLoading &&
 					hasPostTerms &&
 					postTerms
 						.map( ( postTerm ) =>
