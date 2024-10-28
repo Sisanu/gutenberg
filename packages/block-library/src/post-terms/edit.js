@@ -94,6 +94,7 @@ export default function PostTermsEdit( {
 					help={ __( 'Enter character(s) used to separate terms.' ) }
 				/>
 				<ToggleControl
+					__nextHasNoMarginBottom
 					label={ __( 'no link' ) }
 					checked={ noLink }
 					onChange={ ( nextValue ) =>
