@@ -51,7 +51,7 @@ function render_block_core_post_terms( $attributes, $content, $block ) {
 		$suffix = '<span class="wp-block-post-terms__suffix">' . $attributes['suffix'] . '</span>' . $suffix;
 	}
 
-	if ( ! empty( $attributes['noLink'] ) ) {
+	if ( empty( $attributes['isLink'] ) ) {
 		return wp_kses_post( $prefix ) . '<span class="wp-block-post-terms__name">' . wp_kses_post( join( '</span><span class="wp-block-post-terms__separator">' . esc_html( $separator ) . '</span><span class="wp-block-post-terms__name">', wp_list_pluck( $post_terms, 'name' ) ) ) . '</span>' . wp_kses_post( $suffix );
 	}
 
@@ -65,6 +65,10 @@ function render_block_core_post_terms( $attributes, $content, $block ) {
 
 	if ( is_wp_error( $post_terms ) || empty( $post_terms ) ) {
 		return '';
+	}
+
+	if ( ! empty( $attributes['linkTarget'] ) ) {
+		$post_terms = str_replace( ' rel="tag"', ' rel="tag" target="' . esc_html( $attributes['linkTarget'] ) . '"', $post_terms );
 	}
 
 	return $post_terms;
