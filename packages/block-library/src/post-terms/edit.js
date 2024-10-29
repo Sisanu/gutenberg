@@ -95,7 +95,7 @@ export default function PostTermsEdit( {
 				/>
 				<ToggleControl
 					__nextHasNoMarginBottom
-					label={ __( 'no link' ) }
+					label={ __( 'No link' ) }
 					checked={ noLink }
 					onChange={ ( nextValue ) =>
 						setAttributes( { noLink: nextValue } )
