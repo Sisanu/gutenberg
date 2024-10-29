@@ -25,8 +25,13 @@
 			"type": "string",
 			"default": ""
 		},
-		"noLink": {
-			"type": "boolean"
+		"isLink": {
+			"type": "boolean",
+			"default": true
+		},
+		"linkTarget": {
+			"type": "string",
+			"default": "_self"
 		}
 	},
 	"usesContext": [ "postId", "postType" ],

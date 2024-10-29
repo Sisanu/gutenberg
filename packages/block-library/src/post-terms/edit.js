@@ -15,7 +15,12 @@ import {
 	RichText,
 } from '@wordpress/block-editor';
 import { createBlock, getDefaultBlockName } from '@wordpress/blocks';
-import { Spinner, TextControl, ToggleControl } from '@wordpress/components';
+import {
+	Spinner,
+	TextControl,
+	ToggleControl,
+	PanelBody,
+} from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
 import { __ } from '@wordpress/i18n';
@@ -44,7 +49,8 @@ export default function PostTermsEdit( {
 	setAttributes,
 	insertBlocksAfter,
 } ) {
-	const { term, textAlign, separator, prefix, suffix, noLink } = attributes;
+	const { term, textAlign, separator, prefix, suffix, isLink, linkTarget } =
+		attributes;
 	const { postId, postType } = context;
 
 	const selectedTerm = useSelect(
@@ -81,6 +87,28 @@ export default function PostTermsEdit( {
 					} }
 				/>
 			</BlockControls>
+			<InspectorControls>
+				<PanelBody title={ __( 'Settings' ) }>
+					<ToggleControl
+						__nextHasNoMarginBottom
+						label={ __( 'Link terms names to term archive pages' ) }
+						checked={ isLink }
+						onChange={ () => setAttributes( { isLink: ! isLink } ) }
+					/>
+					{ isLink && (
+						<ToggleControl
+							__nextHasNoMarginBottom
+							label={ __( 'Open in new tab' ) }
+							onChange={ ( value ) =>
+								setAttributes( {
+									linkTarget: value ? '_blank' : '_self',
+								} )
+							}
+							checked={ linkTarget === '_blank' }
+						/>
+					) }
+				</PanelBody>
+			</InspectorControls>
 			<InspectorControls group="advanced">
 				<TextControl
 					__next40pxDefaultSize
@@ -92,17 +120,6 @@ export default function PostTermsEdit( {
 						setAttributes( { separator: nextValue } );
 					} }
 					help={ __( 'Enter character(s) used to separate terms.' ) }
-				/>
-				<ToggleControl
-					__nextHasNoMarginBottom
-					label={ __( 'No link' ) }
-					checked={ noLink }
-					onChange={ ( nextValue ) =>
-						setAttributes( { noLink: nextValue } )
-					}
-					help={ __(
-						'Toggle on the option to remove the terms links from the output.'
-					) }
 				/>
 			</InspectorControls>
 			<div { ...blockProps }>
@@ -129,7 +146,7 @@ export default function PostTermsEdit( {
 					hasPostTerms &&
 					postTerms
 						.map( ( postTerm ) =>
-							noLink ? (
+							! isLink ? (
 								<span className="wp-block-post-terms__name">
 									{ decodeEntities( postTerm.name ) }
 								</span>
@@ -137,6 +154,7 @@ export default function PostTermsEdit( {
 								<a
 									key={ postTerm.id }
 									href={ postTerm.link }
+									target={ linkTarget ?? '_self' }
 									onClick={ ( event ) =>
 										event.preventDefault()
 									}
