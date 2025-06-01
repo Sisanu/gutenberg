@@ -13,6 +13,7 @@ import {
 	useBlockProps,
 	useBlockDisplayInformation,
 	RichText,
+	useBlockEditingMode,
 } from '@wordpress/block-editor';
 import { createBlock, getDefaultBlockName } from '@wordpress/blocks';
 import {
@@ -52,6 +53,8 @@ export default function PostTermsEdit( {
 	const { term, textAlign, separator, prefix, suffix, isLink, linkTarget } =
 		attributes;
 	const { postId, postType } = context;
+	const blockEditingMode = useBlockEditingMode();
+	const showControls = blockEditingMode === 'default';
 
 	const selectedTerm = useSelect(
 		( select ) => {
@@ -79,14 +82,16 @@ export default function PostTermsEdit( {
 
 	return (
 		<>
-			<BlockControls>
-				<AlignmentToolbar
-					value={ textAlign }
-					onChange={ ( nextAlign ) => {
-						setAttributes( { textAlign: nextAlign } );
-					} }
-				/>
-			</BlockControls>
+			{ showControls && (
+				<BlockControls>
+					<AlignmentToolbar
+						value={ textAlign }
+						onChange={ ( nextAlign ) => {
+							setAttributes( { textAlign: nextAlign } );
+						} }
+					/>
+				</BlockControls>
+			) }
 			<InspectorControls>
 				<PanelBody title={ __( 'Settings' ) }>
 					<ToggleControl
